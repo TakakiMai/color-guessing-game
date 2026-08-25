@@ -43,5 +43,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Giant.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Suneo",
+    "name": "Honekawa Suneo",
+    "category": "DORAEMON",
+    "target": {
+      "h": 164,
+      "s": 50,
+      "l": 46
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Suneo.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Suneo.png",
+      "shading": ""
+    }
   }
 ]
