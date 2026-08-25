@@ -3,10 +3,29 @@
     "id": "q1",
     "name": "Pikachu",
     "category": "ANIME",
-    "target": { "h": 50, "s": 100, "l": 50 },
+    "target": {
+      "h": 50,
+      "s": 100,
+      "l": 50
+    },
     "images": {
       "answer": "https://placehold.co/400x400/png?text=Ans",
       "background": "https://placehold.co/400x400/png?text=Bg"
+    }
+  },
+  {
+    "id": "Dekisugi",
+    "name": "Dekisugi Hidetoshi",
+    "category": "DORAEMON",
+    "target": {
+      "h": 147,
+      "s": 69,
+      "l": 89
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Dekisugi.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Dekisugi.png",
+      "shading": ""
     }
   }
 ]
