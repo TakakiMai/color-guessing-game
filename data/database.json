@@ -13,5 +13,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Dekisugi.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Doraemon",
+    "name": "Doraemon",
+    "category": "DORAEMON",
+    "target": {
+      "h": 193,
+      "s": 95,
+      "l": 39
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Doraemon.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Doraemon.png",
+      "shading": ""
+    }
   }
 ]
