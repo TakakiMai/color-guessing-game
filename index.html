@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Guessing Game - Full CMS System</title>
+    <title>Color Guessing Game - Multiplayer & GitHub Sync</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
 :root{
@@ -20,6 +20,8 @@
   --shadow:0 24px 70px rgba(0,0,0,.38);
   --radius:22px;
   --current-color: hsl(100, 100%, 33%);
+  --current-hue-sat-max: hsl(100, 100%, 50%);
+  --current-hue-sat-mid: hsl(100, 100%, 50%);
 }
 *{box-sizing:border-box}
 html,body{min-height:100%;margin:0}
@@ -168,7 +170,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 .score-percent{font-size:18px;color:#65e39a;font-weight:700}
 .picked-color{width:50px;height:26px;border:2px solid rgba(255,255,255,.7);border-radius:7px;}
 
-/* Modal & Admin Grid */
 .admin-panel { padding: 30px; }
 .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
 .admin-card { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
@@ -321,7 +322,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Admin Panel Screen (อัปเดตระบบอัปโหลดลง GitHub) -->
     <div id="screen-admin" class="screen">
         <div class="admin-panel">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
@@ -412,6 +412,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, deleteField } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // 🟢 เปลี่ยนค่าตรงนี้เป็น Firebase Config ของคุณ
         const firebaseConfig = {
             apiKey: "AIzaSyAh3pCV2Bx54uG6403kL-0-XH3DxeCmCuI",
             authDomain: "color-guessing-a00c4.firebaseapp.com",
@@ -443,7 +444,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         const state = {
             userId: null, username: '', avatar: 'Felix',
             roomCode: null, isHost: false, roomData: null, unsubscribeRoom: null,
-            timerId: null, secondsPerRound: 15, currentQuestion: null
+            timerId: null, secondsPerRound: 15, currentQuestion: null, round: 1, hasSubmitted: false
         };
 
         function toast(msg) {
@@ -462,9 +463,9 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
         }
 
-        /* ----------------------------------------------------
-           GitHub API Utilities (ระบบอัปโหลดภาพ + แก้ไข JSON)
-        ----------------------------------------------------- */
+        // ==========================================
+        // GitHub API Utilities
+        // ==========================================
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 if (!file) resolve(null);
@@ -485,27 +486,18 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     'Accept': 'application/vnd.github+json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    message: commitMessage,
-                    content: base64Content,
-                    branch: GH_BRANCH
-                })
+                body: JSON.stringify({ message: commitMessage, content: base64Content, branch: GH_BRANCH })
             });
             if (!res.ok) {
                 const err = await res.json();
                 throw new Error(err.message || 'Upload failed');
             }
-            // คืนค่าลิงก์ Raw สดๆ เพื่อเอาไปใช้แสดงผล
             return `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/refs/heads/${GH_BRANCH}/${filePath}`;
         }
 
         async function updateDatabaseJSONOnGitHub(token, newQuestionObj) {
             const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_DB_PATH}`;
-            
-            // 1. ดึงไฟล์เดิมมาก่อนเพื่อเอา SHA
-            const getRes = await fetch(url + `?ref=${GH_BRANCH}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            const getRes = await fetch(url + `?ref=${GH_BRANCH}`, { headers: { 'Authorization': `Bearer ${token}` } });
 
             let currentData = [];
             let sha = null;
@@ -517,34 +509,20 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                 currentData = JSON.parse(decodedContent);
             }
 
-            // 2. เติมข้อมูลใหม่ลง Array
             currentData.push(newQuestionObj);
-
-            // 3. ห่อกลับเป็น Base64 แบบรองรับภาษาไทย
             const updatedJsonStr = JSON.stringify(currentData, null, 2);
             const updatedBase64 = btoa(unescape(encodeURIComponent(updatedJsonStr)));
-
-            // 4. เขียนทับไฟล์เดิม
-            const bodyPayload = {
-                message: `Add new question: ${newQuestionObj.id}`,
-                content: updatedBase64,
-                branch: GH_BRANCH
-            };
+            const bodyPayload = { message: `Add new question: ${newQuestionObj.id}`, content: updatedBase64, branch: GH_BRANCH };
             if (sha) bodyPayload.sha = sha;
 
             const putRes = await fetch(url, {
                 method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github+json',
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
                 body: JSON.stringify(bodyPayload)
             });
 
             if (!putRes.ok) throw new Error('Failed to update database.json');
-            
-            QUESTION_BANK = currentData; // อัปเดตในหน่วยความจำชั่วคราวด้วย
+            QUESTION_BANK = currentData;
             renderAdminQuestionList();
         }
 
@@ -553,7 +531,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         // ==========================================
         async function fetchGitHubData() {
             try {
-                // เติมพารามิเตอร์กันแคช (Cache Busting)
                 const res = await fetch(GITHUB_JSON_URL + "?t=" + Date.now());
                 if(res.ok) {
                     QUESTION_BANK = await res.json();
@@ -599,6 +576,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             const code = Math.random().toString(36).substring(2, 8).toUpperCase();
             state.roomCode = code; state.isHost = true;
             await setDoc(doc(db, 'rooms', code), {
+                code: code,
                 status: 'LOBBY', hostId: state.userId,
                 players: { [state.userId]: { name: state.username, avatar: state.avatar, score: 0 } },
                 questions: [], answers: {}, currentRound: 0
@@ -629,16 +607,16 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         };
 
         function listenToRoom(code) {
-            state.unsubscribeRoom = onSnapshot(doc(db, 'rooms', code), (doc) => {
-                if(!doc.exists()) return leaveRoom();
-                const data = doc.data();
+            state.unsubscribeRoom = onSnapshot(doc(db, 'rooms', code), (docSnap) => {
+                if(!docSnap.exists()) return leaveRoom();
+                const data = docSnap.data();
                 state.roomData = data;
                 
                 if(!data.players[data.hostId]) {
                     const firstPlayer = Object.keys(data.players)[0];
                     if(firstPlayer === state.userId) {
                         state.isHost = true;
-                        updateDoc(doc.ref, { hostId: state.userId });
+                        updateDoc(docSnap.ref, { hostId: state.userId });
                     }
                 }
 
@@ -672,8 +650,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         };
 
         function handlePlayingState(data) {
-            if(document.getElementById('screen-picker').classList.contains('active') && state.currentQuestion) return;
+            // เช็คว่าถ้าเป็นหน้าจอเดิม และข้อปัจจุบันตรงกับรอบที่อัปเดต ไม่ต้องสั่งอัปเดต UI ซ้ำ (ป้องกันคำตอบรีเซ็ต)
+            if(state.round === data.currentRound && document.getElementById('screen-picker').classList.contains('active')) return;
             
+            state.round = data.currentRound;
             state.currentQuestion = data.questions[data.currentRound - 1];
             state.secondsPerRound = data.secondsPerRound;
             state.hasSubmitted = false;
@@ -686,6 +666,12 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             document.getElementById('layer-shading').style.display = qImg.shading ? 'block' : 'none';
             document.getElementById('layer-background').src = qImg.background || qImg.answer || '';
             document.getElementById('layer-background').style.display = (qImg.background || qImg.answer) ? 'block' : 'none';
+            
+            // ตั้งค่าสีสไลเดอร์เริ่มต้น
+            document.getElementById('hue').value = 100;
+            document.getElementById('sat').value = 100;
+            document.getElementById('light').value = 33;
+            updateTint();
             
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('submit-btn').textContent = 'ส่งคำตอบ';
@@ -713,7 +699,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             const h = document.getElementById('hue').value;
             const s = document.getElementById('sat').value;
             const l = document.getElementById('light').value;
-            const target = state.currentQuestion.target;
+            const target = state.currentQuestion.target || {h:0, s:0, l:0};
             
             const dh = Math.min(Math.abs(h - target.h), 360 - Math.abs(h - target.h)) / 180;
             const ds = Math.abs(s - target.s) / 100;
@@ -778,7 +764,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     <div class="avatar" style="background-image:url('https://api.dicebear.com/7.x/pixel-art/svg?seed=${data.players[uid].avatar}')"></div>
                     <div class="score-info">
                         <span style="color:#fff;font-size:13px;">${escapeHtml(data.players[uid].name)}</span>
-                        <span style="color:var(--success);font-weight:bold;">${ans.score} pts</span>
+                        <span style="color:var(--success);font-weight:bold;">ความแม่นยำ ${ans.score}%</span>
                     </div>
                     <div class="picked-color" style="background:hsl(${ans.h},${ans.s}%,${ans.l}%)"></div>
                 </div>
@@ -805,7 +791,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     <div class="avatar" style="background-image:url('https://api.dicebear.com/7.x/pixel-art/svg?seed=${p.avatar}')"></div>
                     <div class="score-info">
                         <span style="color:#fff;font-weight:bold;">${escapeHtml(p.name)}</span>
-                        <span style="color:var(--warning);font-weight:bold;">${p.score} pts</span>
+                        <span style="color:var(--warning);font-weight:bold;">คะแนนรวม ${p.score} pts</span>
                     </div>
                 </div>
             `).join('');
@@ -817,6 +803,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         function updateTint() {
             const h = hInput.value, s = sInput.value, l = lInput.value;
             document.documentElement.style.setProperty('--current-color', `hsl(${h}, ${s}%, ${l}%)`);
+            // อัปเดตสีไล่เฉดของหลอด Sat และ Light
+            document.documentElement.style.setProperty('--current-hue-sat-max', `hsl(${h}, 100%, 50%)`);
+            document.documentElement.style.setProperty('--current-hue-sat-mid', `hsl(${h}, ${s}%, 50%)`);
+            
             document.getElementById('val-hue').textContent = `H ${h}°`;
             document.getElementById('val-sat').textContent = `S ${s}%`;
             document.getElementById('val-light').textContent = `L ${l}%`;
