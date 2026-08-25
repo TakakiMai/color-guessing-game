@@ -103,5 +103,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Nobita01.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Tamago02",
+    "name": "Nobi Tamago",
+    "category": "DORAEMON",
+    "target": {
+      "h": 1,
+      "s": 86,
+      "l": 80
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Tamago02.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Tamago02.png",
+      "shading": ""
+    }
   }
 ]
