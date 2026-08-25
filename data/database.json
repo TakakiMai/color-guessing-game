@@ -88,5 +88,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Nobisuke01.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Nobita01",
+    "name": "Nobi Nobita",
+    "category": "DORAEMON",
+    "target": {
+      "h": 47,
+      "s": 97,
+      "l": 65
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Nobita01.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Nobita01.png",
+      "shading": ""
+    }
   }
 ]
