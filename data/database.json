@@ -58,5 +58,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Suneo.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Shizuka01",
+    "name": "Minamoto Shizuka",
+    "category": "DORAEMON",
+    "target": {
+      "h": 343,
+      "s": 98,
+      "l": 80
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Shizuka01.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Shizuka01.png",
+      "shading": ""
+    }
   }
 ]
