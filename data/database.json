@@ -28,5 +28,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/003.png",
       "shading": ""
     }
+  },
+  {
+    "id": "005",
+    "name": "Gouda Takeshi",
+    "category": "CARTOON",
+    "target": {
+      "h": 30,
+      "s": 98,
+      "l": 59
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/005.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/005.png",
+      "shading": ""
+    }
   }
 ]
