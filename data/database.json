@@ -73,5 +73,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Shizuka01.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Nobisuke01",
+    "name": "Nobi Nobisuke",
+    "category": "DORAEMON",
+    "target": {
+      "h": 358,
+      "s": 78,
+      "l": 64
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Nobisuke01.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Nobisuke01.png",
+      "shading": ""
+    }
   }
 ]
