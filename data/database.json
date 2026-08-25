@@ -28,5 +28,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Doraemon.png",
       "shading": ""
     }
+  },
+  {
+    "id": "Giant",
+    "name": "Gouda Takeshi",
+    "category": "DORAEMON",
+    "target": {
+      "h": 30,
+      "s": 98,
+      "l": 59
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/Giant.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/Giant.png",
+      "shading": ""
+    }
   }
 ]
