@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Guessing Game - Multiplayer & GitHub Sync</title>
+    <title>Color Guessing Game - Full CMS System</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
 :root{
@@ -170,13 +170,14 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 .score-percent{font-size:18px;color:#65e39a;font-weight:700}
 .picked-color{width:50px;height:26px;border:2px solid rgba(255,255,255,.7);border-radius:7px;}
 
+/* Modal & Admin Grid */
 .admin-panel { padding: 30px; }
 .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
 .admin-card { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
 .admin-question-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(0,0,0,.2); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
 .admin-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: contain; background: #000; }
 .admin-item-info { flex: 1; text-align: left; }
-.admin-item-title { font-weight: 700; font-size: 14px; color: #fff; }
+.admin-item-title { font-weight: 700; font-size: 14px; color: #fff; display:flex; align-items:center; gap:6px;}
 .admin-item-cat { font-size: 11px; color: var(--muted); }
 .admin-item-swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,.5); }
 
@@ -186,9 +187,14 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 .passcode-input { letter-spacing: 6px; font-size: 24px; font-weight: 700; text-align: center; }
 .eyedropper-active { cursor: crosshair !important; }
 
+.file-select-group { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.file-select-group select { flex: 1; }
+.file-select-group input[type="file"] { flex: 1; }
+
 @media(max-width:760px){
   .game-content,.admin-grid{grid-template-columns:1fr;gap:14px}
   .image-canvas-card{height:220px}
+  .file-select-group { flex-direction: column; }
 }
     </style>
 </head>
@@ -322,6 +328,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
+    <!-- Admin Panel Screen -->
     <div id="screen-admin" class="screen">
         <div class="admin-panel">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
@@ -332,17 +339,18 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             <div class="input-group" style="background: rgba(255,200,87,0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,200,87,0.3);">
                 <label style="color:var(--warning);">🔑 GitHub Personal Access Token (PAT)</label>
                 <input type="password" id="adm-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx..." autocomplete="off">
-                <div style="font-size:11px; color:#dce7f5; margin-top:6px;">* จำเป็นต้องใส่เพื่อยืนยันสิทธิ์ในการอัปโหลดภาพและเซฟโจทย์ลง Repository (สิทธิ์: repo)</div>
+                <div style="font-size:11px; color:#dce7f5; margin-top:6px;">* จำเป็นต้องใส่เพื่อยืนยันสิทธิ์ในการแก้ไขหรือลบโจทย์ลง Repository (สิทธิ์: repo)</div>
+                <button class="btn btn-small btn-secondary" style="margin-top:10px;" onclick="fetchGitHubFolderContents()">🔄 โหลดรายชื่อภาพจาก GitHub</button>
             </div>
 
             <div class="admin-grid">
-                <!-- Form Add New Level -->
+                <!-- Form Add / Edit Level -->
                 <div class="admin-card">
-                    <h3 style="font-size:16px;margin-bottom:14px;color:#35d07f;">➕ เพิ่มโจทย์ใหม่และอัปโหลดภาพ</h3>
+                    <h3 id="form-title" style="font-size:16px;margin-bottom:14px;color:#35d07f;">➕ เพิ่มโจทย์ใหม่และจัดการภาพ</h3>
                     
                     <div class="input-group">
-                        <label>รหัสโจทย์ (ใช้ตั้งชื่อไฟล์ภาพ เช่น q001)</label>
-                        <input type="text" id="adm-quiz-id" placeholder="ตั้งชื่อรหัสภาษาอังกฤษ/ตัวเลข">
+                        <label>รหัสโจทย์ (ID)</label>
+                        <input type="text" id="adm-quiz-id" placeholder="ตั้งชื่อรหัสภาษาอังกฤษ/ตัวเลข เช่น q001">
                     </div>
                     <div class="input-group">
                         <label>ชื่อตัวละคร / ชื่อโจทย์ที่แสดง</label>
@@ -351,15 +359,24 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     
                     <div class="input-group">
                         <label>1. ภาพเฉลยจริง (Answer Image)</label>
-                        <input type="file" id="adm-file-answer" accept="image/png, image/jpeg" onchange="previewAdminImages()">
+                        <div class="file-select-group">
+                            <select id="adm-sel-answer" onchange="previewImagesFromSelects()"><option value="">-- เลือกภาพจากคลัง --</option></select>
+                            <input type="file" id="adm-file-answer" accept="image/png, image/jpeg" onchange="clearSelectAndPreview('adm-sel-answer')">
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>2. ภาพเจาะใส (Cutout Background)</label>
-                        <input type="file" id="adm-file-bg" accept="image/png" onchange="previewAdminImages()">
+                        <div class="file-select-group">
+                            <select id="adm-sel-bg" onchange="previewImagesFromSelects()"><option value="">-- เลือกภาพจากคลัง --</option></select>
+                            <input type="file" id="adm-file-bg" accept="image/png" onchange="clearSelectAndPreview('adm-sel-bg')">
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>3. ภาพแสงเงา (Shading Layer)</label>
-                        <input type="file" id="adm-file-shading" accept="image/png" onchange="previewAdminImages()">
+                        <div class="file-select-group">
+                            <select id="adm-sel-shading" onchange="previewImagesFromSelects()"><option value="">-- เลือกภาพจากคลัง --</option></select>
+                            <input type="file" id="adm-file-shading" accept="image/png" onchange="clearSelectAndPreview('adm-sel-shading')">
+                        </div>
                     </div>
                     
                     <div class="input-group">
@@ -395,13 +412,15 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                         <img id="adm-img-ans-prev" class="answer-layer eyedropper-active" src="https://placehold.co/200x200/png?text=Preview" onclick="sampleColorFromCanvasPreview(event)" title="คลิกบนภาพเพื่อดูดสี">
                     </div>
 
-                    <button class="btn btn-green" id="btn-upload-save" onclick="saveAndUploadQuestion()">⬆️ บันทึกและอัปโหลดขึ้น GitHub</button>
+                    <button class="btn btn-green" id="btn-upload-save" onclick="saveAndUploadQuestion()">⬆️ บันทึกโจทย์ (อัปโหลดอัตโนมัติ)</button>
+                    <!-- ปุ่มสำหรับยกเลิกการแก้ไข (ซ่อนไว้ตอนแรก) -->
+                    <button class="btn btn-secondary" id="btn-cancel-edit" style="display:none; margin-top:10px;" onclick="cancelEditMode()">❌ ยกเลิกการแก้ไข</button>
                 </div>
 
                 <!-- Admin Question List -->
                 <div class="admin-card">
                     <h3 style="font-size:16px;margin-bottom:14px;color:#4f8cff;">📋 รายการโจทย์ที่มีใน GitHub (<span id="adm-q-count">0</span>)</h3>
-                    <div id="admin-question-list" style="max-height:650px;overflow-y:auto;padding-right:4px;"></div>
+                    <div id="admin-question-list" style="max-height:850px;overflow-y:auto;padding-right:4px;"></div>
                 </div>
             </div>
         </div>
@@ -419,8 +438,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             projectId: "color-guessing-a00c4",
             storageBucket: "color-guessing-a00c4.firebasestorage.app",
             messagingSenderId: "352324686988",
-            appId: "1:352324686988:web:65f60d693833db6b6cd7a9",
-            measurementId: "G-LQGG6FDDHR"
+            appId: "1:352324686988:web:65f60d693833db6b6cd7a9"
         };
 
         // 🟢 การตั้งค่าบัญชี GitHub ของคุณ
@@ -444,8 +462,11 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         const state = {
             userId: null, username: '', avatar: 'Felix',
             roomCode: null, isHost: false, roomData: null, unsubscribeRoom: null,
-            timerId: null, secondsPerRound: 15, currentQuestion: null, round: 1, hasSubmitted: false
+            timerId: null, secondsPerRound: 15, currentQuestion: null, round: 1
         };
+        
+        // ตัวแปรเก็บสถานะการแก้ไข (ถ้ามีค่า = กำลังแก้ไขข้อนั้นอยู่)
+        let editingQuizId = null;
 
         function toast(msg) {
             const t = document.getElementById('toast');
@@ -463,9 +484,9 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
         }
 
-        // ==========================================
-        // GitHub API Utilities
-        // ==========================================
+        /* ----------------------------------------------------
+           GitHub API Utilities (รองรับการเขียนไฟล์ใหม่ทั้งหมด)
+        ----------------------------------------------------- */
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 if (!file) resolve(null);
@@ -486,7 +507,11 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     'Accept': 'application/vnd.github+json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: commitMessage, content: base64Content, branch: GH_BRANCH })
+                body: JSON.stringify({
+                    message: commitMessage,
+                    content: base64Content,
+                    branch: GH_BRANCH
+                })
             });
             if (!res.ok) {
                 const err = await res.json();
@@ -495,10 +520,11 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             return `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/refs/heads/${GH_BRANCH}/${filePath}`;
         }
 
-        async function updateDatabaseJSONOnGitHub(token, newQuestionObj) {
+        // ฟังก์ชันใหม่: ส่งข้อมูลโจทย์ทั้งหมด (Array) ไปเขียนทับไฟล์เดิมบน GitHub
+        async function syncDatabaseToGitHub(token, newBankArray, commitMessage) {
             const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_DB_PATH}`;
             
-            // เพิ่ม &t=Date.now() เข้าไปใน URL เพื่อป้องกันเบราว์เซอร์จำ Cache เก่า
+            // ดึงไฟล์เดิมมาก่อนเพื่อเอา SHA
             const getRes = await fetch(url + `?ref=${GH_BRANCH}&t=${Date.now()}`, {
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -506,41 +532,34 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                 }
             });
 
-            let currentData = [];
             let sha = null;
-
             if (getRes.ok) {
                 const fileInfo = await getRes.json();
                 sha = fileInfo.sha;
-                
-                // ถอดรหัสไฟล์เดิมมาแก้ไข
-                const decodedContent = decodeURIComponent(escape(atob(fileInfo.content)));
-                
-                // ตรวจสอบว่าถ้าไฟล์ว่างเปล่า ให้กำหนดเป็น Array ว่าง
-                if (decodedContent.trim() === "") {
-                    currentData = [];
-                } else {
-                    currentData = JSON.parse(decodedContent);
-                }
             }
 
-            // ... (โค้ดส่วนที่เหลือด้านล่างเหมือนเดิม)
-
-            currentData.push(newQuestionObj);
-            const updatedJsonStr = JSON.stringify(currentData, null, 2);
+            // แปลง Array ของเรากลับไปเป็น Base64
+            const updatedJsonStr = JSON.stringify(newBankArray, null, 2);
             const updatedBase64 = btoa(unescape(encodeURIComponent(updatedJsonStr)));
-            const bodyPayload = { message: `Add new question: ${newQuestionObj.id}`, content: updatedBase64, branch: GH_BRANCH };
+
+            const bodyPayload = {
+                message: commitMessage,
+                content: updatedBase64,
+                branch: GH_BRANCH
+            };
             if (sha) bodyPayload.sha = sha;
 
             const putRes = await fetch(url, {
                 method: 'PUT',
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github+json',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(bodyPayload)
             });
 
             if (!putRes.ok) throw new Error('Failed to update database.json');
-            QUESTION_BANK = currentData;
-            renderAdminQuestionList();
         }
 
         // ==========================================
@@ -548,17 +567,22 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         // ==========================================
         async function fetchGitHubData() {
             try {
-                const res = await fetch(GITHUB_JSON_URL + "?t=" + Date.now());
-                if(res.ok) {
-                    QUESTION_BANK = await res.json();
-                    const loadedCats = [...new Set(QUESTION_BANK.map(q => q.category))];
-                    CATEGORIES = [...new Set([...CATEGORIES, ...loadedCats])];
+                if(GITHUB_JSON_URL.includes("YOUR_GITHUB_USER")) {
+                    QUESTION_BANK = [];
+                } else {
+                    const res = await fetch(GITHUB_JSON_URL + "?t=" + Date.now());
+                    if(res.ok) {
+                        QUESTION_BANK = await res.json();
+                        const loadedCats = [...new Set(QUESTION_BANK.map(q => q.category))];
+                        CATEGORIES = [...new Set([...CATEGORIES, ...loadedCats])];
+                    }
                 }
+                
                 document.getElementById('setting-category').innerHTML = `<option value="ALL">รวมทุกหมวด</option>` + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
                 document.getElementById('db-status').textContent = `โหลดโจทย์พร้อมแล้ว (${QUESTION_BANK.length} ข้อ)`;
                 document.getElementById('btn-login').disabled = false;
             } catch (err) {
-                document.getElementById('db-status').textContent = "ยังไม่มีฐานข้อมูล ระบบพร้อมใช้งานเฉพาะคลังชั่วคราว";
+                document.getElementById('db-status').textContent = "โหลดฐานข้อมูลล้มเหลว ตรวจสอบ URL GitHub";
                 document.getElementById('btn-login').disabled = false;
             }
         }
@@ -592,6 +616,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         window.createRoom = async function() {
             const code = Math.random().toString(36).substring(2, 8).toUpperCase();
             state.roomCode = code; state.isHost = true;
+            
             await setDoc(doc(db, 'rooms', code), {
                 code: code,
                 status: 'LOBBY', hostId: state.userId,
@@ -624,16 +649,16 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         };
 
         function listenToRoom(code) {
-            state.unsubscribeRoom = onSnapshot(doc(db, 'rooms', code), (docSnap) => {
-                if(!docSnap.exists()) return leaveRoom();
-                const data = docSnap.data();
+            state.unsubscribeRoom = onSnapshot(doc(db, 'rooms', code), (doc) => {
+                if(!doc.exists()) return leaveRoom();
+                const data = doc.data();
                 state.roomData = data;
                 
                 if(!data.players[data.hostId]) {
                     const firstPlayer = Object.keys(data.players)[0];
                     if(firstPlayer === state.userId) {
                         state.isHost = true;
-                        updateDoc(docSnap.ref, { hostId: state.userId });
+                        updateDoc(doc.ref, { hostId: state.userId });
                     }
                 }
 
@@ -667,8 +692,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         };
 
         function handlePlayingState(data) {
-            // เช็คว่าถ้าเป็นหน้าจอเดิม และข้อปัจจุบันตรงกับรอบที่อัปเดต ไม่ต้องสั่งอัปเดต UI ซ้ำ (ป้องกันคำตอบรีเซ็ต)
-            if(state.round === data.currentRound && document.getElementById('screen-picker').classList.contains('active')) return;
+            if(document.getElementById('screen-picker').classList.contains('active') && state.round === data.currentRound) return;
             
             state.round = data.currentRound;
             state.currentQuestion = data.questions[data.currentRound - 1];
@@ -683,12 +707,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             document.getElementById('layer-shading').style.display = qImg.shading ? 'block' : 'none';
             document.getElementById('layer-background').src = qImg.background || qImg.answer || '';
             document.getElementById('layer-background').style.display = (qImg.background || qImg.answer) ? 'block' : 'none';
-            
-            // ตั้งค่าสีสไลเดอร์เริ่มต้น
-            document.getElementById('hue').value = 100;
-            document.getElementById('sat').value = 100;
-            document.getElementById('light').value = 33;
-            updateTint();
             
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('submit-btn').textContent = 'ส่งคำตอบ';
@@ -716,7 +734,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             const h = document.getElementById('hue').value;
             const s = document.getElementById('sat').value;
             const l = document.getElementById('light').value;
-            const target = state.currentQuestion.target || {h:0, s:0, l:0};
+            const target = state.currentQuestion.target;
             
             const dh = Math.min(Math.abs(h - target.h), 360 - Math.abs(h - target.h)) / 180;
             const ds = Math.abs(s - target.s) / 100;
@@ -781,7 +799,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     <div class="avatar" style="background-image:url('https://api.dicebear.com/7.x/pixel-art/svg?seed=${data.players[uid].avatar}')"></div>
                     <div class="score-info">
                         <span style="color:#fff;font-size:13px;">${escapeHtml(data.players[uid].name)}</span>
-                        <span style="color:var(--success);font-weight:bold;">ความแม่นยำ ${ans.score}%</span>
+                        <span style="color:var(--success);font-weight:bold;">${ans.score}%</span> 
                     </div>
                     <div class="picked-color" style="background:hsl(${ans.h},${ans.s}%,${ans.l}%)"></div>
                 </div>
@@ -808,7 +826,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     <div class="avatar" style="background-image:url('https://api.dicebear.com/7.x/pixel-art/svg?seed=${p.avatar}')"></div>
                     <div class="score-info">
                         <span style="color:#fff;font-weight:bold;">${escapeHtml(p.name)}</span>
-                        <span style="color:var(--warning);font-weight:bold;">คะแนนรวม ${p.score} pts</span>
+                        <span style="color:var(--warning);font-weight:bold;">${p.score} pts</span>
                     </div>
                 </div>
             `).join('');
@@ -820,7 +838,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         function updateTint() {
             const h = hInput.value, s = sInput.value, l = lInput.value;
             document.documentElement.style.setProperty('--current-color', `hsl(${h}, ${s}%, ${l}%)`);
-            // อัปเดตสีไล่เฉดของหลอด Sat และ Light
             document.documentElement.style.setProperty('--current-hue-sat-max', `hsl(${h}, 100%, 50%)`);
             document.documentElement.style.setProperty('--current-hue-sat-mid', `hsl(${h}, ${s}%, 50%)`);
             
@@ -859,18 +876,74 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             document.getElementById('setting-category').innerHTML = `<option value="ALL">รวมทุกหมวด</option>` + opts;
         }
 
+        window.fetchGitHubFolderContents = async function() {
+            const token = document.getElementById('adm-gh-token').value.trim();
+            if(!token) return toast('กรุณาใส่รหัส GitHub Token ก่อนโหลดภาพ');
+            
+            try {
+                toast('กำลังดึงรายชื่อภาพจาก GitHub...');
+                const getFiles = async (folder) => {
+                    const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/images/${folder}?ref=${GH_BRANCH}`;
+                    const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    if(!res.ok) return [];
+                    const data = await res.json();
+                    return data.filter(f => f.type === 'file').map(f => ({ name: f.name, url: f.download_url }));
+                };
+
+                const [origFiles, holeFiles, shadFiles] = await Promise.all([
+                    getFiles('original'), getFiles('hole'), getFiles('shading')
+                ]);
+
+                populateSelect('adm-sel-answer', origFiles);
+                populateSelect('adm-sel-bg', holeFiles);
+                populateSelect('adm-sel-shading', shadFiles);
+                toast('โหลดรายชื่อภาพสำเร็จ!');
+            } catch (e) {
+                toast('ข้อผิดพลาดในการดึงภาพ: ' + e.message);
+            }
+        };
+
+        function populateSelect(id, files) {
+            const sel = document.getElementById(id);
+            sel.innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>` + 
+                files.map(f => `<option value="${f.url}">${f.name}</option>`).join('');
+        }
+
+        window.clearSelectAndPreview = function(selectId) {
+            document.getElementById(selectId).value = "";
+            previewAdminImages();
+        };
+
+        window.previewImagesFromSelects = function() {
+            document.getElementById('adm-file-answer').value = "";
+            document.getElementById('adm-file-bg').value = "";
+            document.getElementById('adm-file-shading').value = "";
+            previewAdminImages();
+        };
+
         window.previewAdminImages = function() {
             const ansF = document.getElementById('adm-file-answer').files[0];
             const bgF = document.getElementById('adm-file-bg').files[0];
             const shadF = document.getElementById('adm-file-shading').files[0];
 
-            if(ansF) document.getElementById('adm-img-ans-prev').src = URL.createObjectURL(ansF);
-            
+            const ansUrl = document.getElementById('adm-sel-answer').value;
+            const bgUrl = document.getElementById('adm-sel-bg').value;
+            const shadUrl = document.getElementById('adm-sel-shading').value;
+
+            const ansEl = document.getElementById('adm-img-ans-prev');
+            if(ansF) ansEl.src = URL.createObjectURL(ansF);
+            else if(ansUrl) ansEl.src = ansUrl;
+            else ansEl.src = 'https://placehold.co/200x200/png?text=Preview';
+
             const bgEl = document.getElementById('adm-img-bg-prev');
-            if(bgF) { bgEl.src = URL.createObjectURL(bgF); bgEl.style.display = 'block'; } else { bgEl.style.display = 'none'; }
+            if(bgF) { bgEl.src = URL.createObjectURL(bgF); bgEl.style.display = 'block'; }
+            else if(bgUrl) { bgEl.src = bgUrl; bgEl.style.display = 'block'; }
+            else { bgEl.style.display = 'none'; }
             
             const shadEl = document.getElementById('adm-img-shading-prev');
-            if(shadF) { shadEl.src = URL.createObjectURL(shadF); shadEl.style.display = 'block'; } else { shadEl.style.display = 'none'; }
+            if(shadF) { shadEl.src = URL.createObjectURL(shadF); shadEl.style.display = 'block'; }
+            else if(shadUrl) { shadEl.src = shadUrl; shadEl.style.display = 'block'; }
+            else { shadEl.style.display = 'none'; }
         };
 
         window.updateAdminColorPreview = function() {
@@ -927,79 +1000,194 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             } catch(e) { toast('เกิดปัญหาการดูดสี (CORS) โปรดใช้ปุ่มแว่นขยาย'); }
         };
 
+        // ==========================================
+        // UI Render - เพิ่มปุ่มแก้ไข/ลบ ในรายการโจทย์
+        // ==========================================
         function renderAdminQuestionList() {
             document.getElementById('adm-q-count').textContent = QUESTION_BANK.length;
             document.getElementById('admin-question-list').innerHTML = QUESTION_BANK.map((q) => `
                 <div class="admin-question-item">
                     <img src="${escapeHtml(q.images?.answer || '')}" class="admin-thumb">
                     <div class="admin-item-info">
-                        <div class="admin-item-title">${escapeHtml(q.name)}</div>
+                        <div class="admin-item-title">${escapeHtml(q.name)} <span style="font-size:10px;color:#aaa;">(${q.id})</span></div>
                         <div class="admin-item-cat">${escapeHtml(q.category)} • HSL(${q.target.h}, ${q.target.s}%, ${q.target.l}%)</div>
                     </div>
                     <div class="admin-item-swatch" style="background:hsl(${q.target.h},${q.target.s}%,${q.target.l}%)"></div>
+                    <div style="display:flex;gap:4px;margin-left:8px;">
+                        <button class="btn btn-secondary btn-small" onclick="editQuestion('${q.id}')">✏️ แก้ไข</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteQuestion('${q.id}')">🗑️ ลบ</button>
+                    </div>
                 </div>
             `).join('');
         }
 
+        // ==========================================
+        // ระบบลบโจทย์ (Delete)
+        // ==========================================
+        window.deleteQuestion = async function(id) {
+            if(!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบโจทย์รหัส "${id}" ?`)) return;
+            const token = document.getElementById('adm-gh-token').value.trim();
+            if(!token) return toast('⚠️ กรุณาใส่รหัส GitHub Token (PAT) ก่อนทำรายการ');
+
+            toast('⏳ กำลังลบโจทย์ออกจากระบบ...');
+            try {
+                // คัดกรองเอาเฉพาะโจทย์ที่ไม่ใช่ ID ที่เลือกลบ
+                const newBank = QUESTION_BANK.filter(q => q.id !== id);
+                
+                // ส่งชุดข้อมูลใหม่ที่ไม่มีข้อนี้แล้วไปทับไฟล์เดิม
+                await syncDatabaseToGitHub(token, newBank, `Delete question ${id}`);
+                
+                QUESTION_BANK = newBank;
+                renderAdminQuestionList();
+                toast('✅ ลบโจทย์สำเร็จ!');
+            } catch (e) {
+                toast('❌ เกิดข้อผิดพลาด: ' + e.message);
+            }
+        };
+
+        // ==========================================
+        // ระบบแก้ไขโจทย์ (Edit Mode)
+        // ==========================================
+        window.editQuestion = function(id) {
+            const q = QUESTION_BANK.find(item => item.id === id);
+            if(!q) return;
+
+            // กำหนดสถานะว่ากำลังแก้ไขโจทย์รหัสอะไรอยู่
+            editingQuizId = id;
+            
+            document.getElementById('form-title').textContent = '✏️ แก้ไขข้อมูลโจทย์';
+            document.getElementById('adm-quiz-id').value = q.id;
+            document.getElementById('adm-quiz-id').disabled = true; // ล็อคห้ามแก้ ID
+            document.getElementById('adm-name').value = q.name;
+            document.getElementById('adm-category').value = q.category;
+
+            // กำหนดค่าสี
+            document.getElementById('adm-h').value = q.target.h;
+            document.getElementById('adm-s').value = q.target.s;
+            document.getElementById('adm-l').value = q.target.l;
+            updateAdminColorPreview();
+
+            // ดึงลิงก์รูปมาใส่ใน Dropdown เป็นค่าเริ่มต้น (เผื่อขี้เกียจกดโหลดรายชื่อภาพ)
+            document.getElementById('adm-sel-answer').innerHTML = `<option value="${q.images.answer}">[รูปที่ใช้อยู่ปัจจุบัน]</option>`;
+            document.getElementById('adm-sel-answer').value = q.images.answer;
+
+            document.getElementById('adm-sel-bg').innerHTML = q.images.background ? `<option value="${q.images.background}">[รูปที่ใช้อยู่ปัจจุบัน]</option>` : `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            document.getElementById('adm-sel-bg').value = q.images.background || '';
+
+            document.getElementById('adm-sel-shading').innerHTML = q.images.shading ? `<option value="${q.images.shading}">[รูปที่ใช้อยู่ปัจจุบัน]</option>` : `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            document.getElementById('adm-sel-shading').value = q.images.shading || '';
+
+            previewImagesFromSelects();
+
+            // เปลี่ยนสีปุ่มบันทึกให้เด่นชัดขึ้นว่าเป็นโหมดอัปเดต
+            const btn = document.getElementById('btn-upload-save');
+            btn.textContent = '💾 บันทึกการแก้ไข (อัปเดต)';
+            btn.style.background = 'linear-gradient(135deg, #ffc857, #ff8c00)';
+            
+            // แสดงปุ่มยกเลิก
+            document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
+            
+            toast('เลื่อนขึ้นด้านบนเพื่อแก้ไขข้อมูลได้เลยครับ');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.cancelEditMode = function() {
+            editingQuizId = null;
+            document.getElementById('form-title').textContent = '➕ เพิ่มโจทย์ใหม่และจัดการภาพ';
+            document.getElementById('adm-quiz-id').value = '';
+            document.getElementById('adm-quiz-id').disabled = false;
+            document.getElementById('adm-name').value = '';
+            
+            const btn = document.getElementById('btn-upload-save');
+            btn.textContent = '⬆️ บันทึกโจทย์ (อัปโหลดอัตโนมัติ)';
+            btn.style.background = ''; // กลับสีเดิม
+            
+            document.getElementById('btn-cancel-edit').style.display = 'none';
+            document.getElementById('adm-sel-answer').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            document.getElementById('adm-sel-bg').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            document.getElementById('adm-sel-shading').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            
+            previewImagesFromSelects(); // เคลียร์ภาพ
+        };
+
+        // ==========================================
+        // ฟังก์ชันบันทึกหลัก (รองรับทั้งสร้างใหม่ และอัปเดต)
+        // ==========================================
         window.saveAndUploadQuestion = async function() {
             const token = document.getElementById('adm-gh-token').value.trim();
             const qId = document.getElementById('adm-quiz-id').value.trim() || ('q' + Date.now());
             const name = document.getElementById('adm-name').value.trim();
+            
             const ansFile = document.getElementById('adm-file-answer').files[0];
             const bgFile = document.getElementById('adm-file-bg').files[0];
             const shadFile = document.getElementById('adm-file-shading').files[0];
 
-            if(!token) return toast('กรุณาใส่รหัส GitHub Token');
-            if(!name || !ansFile) return toast('กรุณากรอกรหัส/ชื่อโจทย์ และเลือกภาพเฉลยอย่างน้อย 1 ภาพ');
+            let finalAnsUrl = document.getElementById('adm-sel-answer').value;
+            let finalBgUrl = document.getElementById('adm-sel-bg').value;
+            let finalShadUrl = document.getElementById('adm-sel-shading').value;
+
+            if(!token) return toast('กรุณาใส่รหัส GitHub Token (PAT)');
+            if(!name || (!ansFile && !finalAnsUrl)) return toast('กรุณากรอกรหัส/ชื่อโจทย์ และเลือกภาพเฉลยอย่างน้อย 1 ภาพ');
 
             const btn = document.getElementById('btn-upload-save');
-            btn.disabled = true; btn.textContent = '⏳ กำลังอัปโหลด...';
+            btn.disabled = true; btn.textContent = '⏳ กำลังเตรียมข้อมูล...';
 
             try {
-                // 1. Convert Files to Base64
-                const b64Ans = await fileToBase64(ansFile);
-                const b64Bg = await fileToBase64(bgFile);
-                const b64Shad = await fileToBase64(shadFile);
-
-                // 2. Upload Images to GitHub
-                const ansExt = ansFile.name.split('.').pop();
-                const ansUrl = await uploadFileToGitHubAPI(token, `images/original/${qId}.${ansExt}`, b64Ans, `Add ans img ${qId}`);
-                
-                let bgUrl = "";
-                if(b64Bg) {
+                // หากมีการเลือกไฟล์จากเครื่อง ให้ทำการอัปโหลดใหม่
+                if (ansFile) {
+                    btn.textContent = '⏳ กำลังอัปโหลดภาพเฉลย...';
+                    const b64Ans = await fileToBase64(ansFile);
+                    const ansExt = ansFile.name.split('.').pop();
+                    finalAnsUrl = await uploadFileToGitHubAPI(token, `images/original/${qId}.${ansExt}`, b64Ans, `Upload ans img ${qId}`);
+                }
+                if (bgFile) {
+                    btn.textContent = '⏳ กำลังอัปโหลดภาพพื้นหลัง...';
+                    const b64Bg = await fileToBase64(bgFile);
                     const bgExt = bgFile.name.split('.').pop();
-                    bgUrl = await uploadFileToGitHubAPI(token, `images/hole/${qId}.${bgExt}`, b64Bg, `Add bg img ${qId}`);
+                    finalBgUrl = await uploadFileToGitHubAPI(token, `images/hole/${qId}.${bgExt}`, b64Bg, `Upload bg img ${qId}`);
                 }
-
-                let shadUrl = "";
-                if(b64Shad) {
+                if (shadFile) {
+                    btn.textContent = '⏳ กำลังอัปโหลดภาพแสงเงา...';
+                    const b64Shad = await fileToBase64(shadFile);
                     const shadExt = shadFile.name.split('.').pop();
-                    shadUrl = await uploadFileToGitHubAPI(token, `images/shading/${qId}.${shadExt}`, b64Shad, `Add shad img ${qId}`);
+                    finalShadUrl = await uploadFileToGitHubAPI(token, `images/shading/${qId}.${shadExt}`, b64Shad, `Upload shad img ${qId}`);
                 }
 
-                // 3. Create Question Object & Update JSON
+                // สร้าง Object ข้อมูลโจทย์ล่าสุด
                 const newQ = {
-                    id: qId, name: name, category: document.getElementById('adm-category').value,
+                    id: editingQuizId || qId, // ถ้าแก้โจทย์ให้ใช้ ID เดิม
+                    name: name, 
+                    category: document.getElementById('adm-category').value,
                     target: { h: Number(document.getElementById('adm-h').value), s: Number(document.getElementById('adm-s').value), l: Number(document.getElementById('adm-l').value) },
-                    images: { answer: ansUrl, background: bgUrl || ansUrl, shading: shadUrl }
+                    images: { answer: finalAnsUrl, background: finalBgUrl || finalAnsUrl, shading: finalShadUrl }
                 };
 
                 btn.textContent = '⏳ กำลังอัปเดตฐานข้อมูล...';
-                await updateDatabaseJSONOnGitHub(token, newQ);
+                let newBank = [...QUESTION_BANK];
 
-                toast('✅ อัปโหลดและบันทึกโจทย์เรียบร้อยแล้ว!');
+                // ถ้าอยู่ในโหมดแก้ไข (Edit) ให้ค้นหาตำแหน่งแล้วแทนที่ข้อมูลเดิม
+                if (editingQuizId) {
+                    const index = newBank.findIndex(q => q.id === editingQuizId);
+                    if (index !== -1) newBank[index] = newQ;
+                } else {
+                    // ถ้าโหมดปกติ (สร้างใหม่) ให้เอาไปต่อท้าย Array
+                    newBank.push(newQ);
+                }
+
+                // ส่ง Array ล่าสุด ไปทับของเดิมบน GitHub
+                await syncDatabaseToGitHub(token, newBank, editingQuizId ? `Update question ${newQ.id}` : `Add new question ${newQ.id}`);
+
+                toast(editingQuizId ? '✅ อัปเดตข้อมูลสำเร็จ!' : '✅ เพิ่มโจทย์ใหม่สำเร็จ!');
                 
-                // Clear inputs
-                document.getElementById('adm-quiz-id').value = '';
-                document.getElementById('adm-name').value = '';
-                document.getElementById('adm-file-answer').value = '';
-                document.getElementById('adm-file-bg').value = '';
-                document.getElementById('adm-file-shading').value = '';
-                previewAdminImages();
+                // คืนค่าฟอร์มกลับสู่สถานะเริ่มต้น
+                QUESTION_BANK = newBank;
+                renderAdminQuestionList();
+                cancelEditMode();
+
             } catch(e) {
                 toast('❌ ข้อผิดพลาด: ' + e.message);
-            } finally {
-                btn.disabled = false; btn.textContent = '⬆️ บันทึกและอัปโหลดขึ้น GitHub';
+                btn.disabled = false;
+                btn.textContent = editingQuizId ? '💾 บันทึกการแก้ไข (อัปเดต)' : '⬆️ บันทึกโจทย์ (อัปโหลดอัตโนมัติ)';
             }
         };
 
