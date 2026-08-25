@@ -1,19 +1,5 @@
 [
   {
-    "id": "q1",
-    "name": "Pikachu",
-    "category": "ANIME",
-    "target": {
-      "h": 50,
-      "s": 100,
-      "l": 50
-    },
-    "images": {
-      "answer": "https://placehold.co/400x400/png?text=Ans",
-      "background": "https://placehold.co/400x400/png?text=Bg"
-    }
-  },
-  {
     "id": "Dekisugi",
     "name": "Dekisugi Hidetoshi",
     "category": "DORAEMON",
