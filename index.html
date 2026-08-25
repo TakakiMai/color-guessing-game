@@ -497,7 +497,14 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 
         async function updateDatabaseJSONOnGitHub(token, newQuestionObj) {
             const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_DB_PATH}`;
-            const getRes = await fetch(url + `?ref=${GH_BRANCH}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            
+            // เพิ่ม &t=Date.now() เข้าไปใน URL เพื่อป้องกันเบราว์เซอร์จำ Cache เก่า
+            const getRes = await fetch(url + `?ref=${GH_BRANCH}&t=${Date.now()}`, {
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache'
+                }
+            });
 
             let currentData = [];
             let sha = null;
@@ -505,9 +512,19 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             if (getRes.ok) {
                 const fileInfo = await getRes.json();
                 sha = fileInfo.sha;
+                
+                // ถอดรหัสไฟล์เดิมมาแก้ไข
                 const decodedContent = decodeURIComponent(escape(atob(fileInfo.content)));
-                currentData = JSON.parse(decodedContent);
+                
+                // ตรวจสอบว่าถ้าไฟล์ว่างเปล่า ให้กำหนดเป็น Array ว่าง
+                if (decodedContent.trim() === "") {
+                    currentData = [];
+                } else {
+                    currentData = JSON.parse(decodedContent);
+                }
             }
+
+            // ... (โค้ดส่วนที่เหลือด้านล่างเหมือนเดิม)
 
             currentData.push(newQuestionObj);
             const updatedJsonStr = JSON.stringify(currentData, null, 2);
