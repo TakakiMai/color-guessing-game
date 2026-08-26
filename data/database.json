@@ -328,5 +328,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jaiko_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q022",
+    "name": "I M Weasel",
+    "category": "CARTOON",
+    "target": {
+      "h": 17,
+      "s": 83,
+      "l": 56
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/I%20M%20Weasel_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/I%20M%20Weasel_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
