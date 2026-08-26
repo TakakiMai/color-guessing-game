@@ -103,5 +103,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Nobi%20Nobita_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q006",
+    "name": "Nobi Tamago",
+    "category": "CARTOON",
+    "target": {
+      "h": 3,
+      "s": 86,
+      "l": 80
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Nobi%20Tamago_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Nobi%20Tamago_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
