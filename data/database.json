@@ -523,5 +523,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Pawaemon_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q035",
+    "name": "Pippo",
+    "category": "CARTOON",
+    "target": {
+      "h": 53,
+      "s": 68,
+      "l": 66
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Pippo_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Pippo_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
