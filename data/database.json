@@ -28,5 +28,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Doraemon_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "G001",
+    "name": "Gouda Takeshi",
+    "category": "CARTOON",
+    "target": {
+      "h": 30,
+      "s": 98,
+      "l": 59
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Gouda%20Takeshi_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gouda%20Takeshi_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
