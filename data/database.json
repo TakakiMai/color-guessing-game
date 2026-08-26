@@ -1,3 +1,17 @@
 [
-  
+  {
+    "id": "Dekisugi",
+    "name": "Dekisugi Hidetoshi",
+    "category": "CARTOON",
+    "target": {
+      "h": 147,
+      "s": 69,
+      "l": 89
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/q001.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/q001.png",
+      "shading": ""
+    }
+  }
 ]
