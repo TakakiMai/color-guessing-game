@@ -358,5 +358,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jake_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q024",
+    "name": "Kaminari",
+    "category": "CARTOON",
+    "target": {
+      "h": 47,
+      "s": 46,
+      "l": 44
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Kaminari_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Kaminari_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
