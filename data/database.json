@@ -43,5 +43,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gouda%20Takeshi_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q002",
+    "name": "Honekawa Suneo",
+    "category": "CARTOON",
+    "target": {
+      "h": 165,
+      "s": 49,
+      "l": 46
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Honekawa%20Suneo_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Honekawa%20Suneo_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
