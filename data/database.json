@@ -493,5 +493,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Numbuh%202_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q033",
+    "name": "Papi",
+    "category": "CARTOON",
+    "target": {
+      "h": 199,
+      "s": 62,
+      "l": 95
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Papi_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Papi_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
