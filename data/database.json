@@ -58,5 +58,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Honekawa%20Suneo_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q003",
+    "name": "Minamoto Shizuka",
+    "category": "CARTOON",
+    "target": {
+      "h": 343,
+      "s": 98,
+      "l": 80
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Minamoto%20Shizuka_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Minamoto%20Shizuka_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
