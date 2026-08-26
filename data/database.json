@@ -433,5 +433,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mikujin_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q029",
+    "name": "Mordecai",
+    "category": "CARTOON",
+    "target": {
+      "h": 221,
+      "s": 43,
+      "l": 68
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Mordecai_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mordecai_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
