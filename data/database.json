@@ -88,5 +88,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Nobi%20Nobisuke_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q005",
+    "name": "Nobi Nobita",
+    "category": "CARTOON",
+    "target": {
+      "h": 47,
+      "s": 97,
+      "l": 65
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Nobi%20Nobita_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Nobi%20Nobita_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
