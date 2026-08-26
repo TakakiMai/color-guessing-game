@@ -178,5 +178,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Captain%20k'nuckles_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q012",
+    "name": "Dorami",
+    "category": "CARTOON",
+    "target": {
+      "h": 50,
+      "s": 100,
+      "l": 65
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Dorami_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Dorami_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
