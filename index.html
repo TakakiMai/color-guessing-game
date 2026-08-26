@@ -528,7 +528,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             const getRes = await fetch(url + `?ref=${GH_BRANCH}&t=${Date.now()}`, {
                 headers: { 
                     'Authorization': `Bearer ${token}`,
-                    'Cache-Control': 'no-cache'
                 }
             });
 
