@@ -388,5 +388,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Kataoka%20Tamao_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q026",
+    "name": "King Harun",
+    "category": "CARTOON",
+    "target": {
+      "h": 6,
+      "s": 100,
+      "l": 31
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/King%20Harun_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/King%20Harun_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
