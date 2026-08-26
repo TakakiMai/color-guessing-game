@@ -478,5 +478,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Numbuh%201_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q032",
+    "name": "Numbuh 2",
+    "category": "CARTOON",
+    "target": {
+      "h": 188,
+      "s": 100,
+      "l": 38
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Numbuh%202_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Numbuh%202_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
