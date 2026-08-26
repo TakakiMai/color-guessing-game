@@ -163,5 +163,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Bloo_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q011",
+    "name": "Captain k'nuckles",
+    "category": "CARTOON",
+    "target": {
+      "h": 203,
+      "s": 16,
+      "l": 42
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Captain%20k'nuckles_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Captain%20k'nuckles_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
