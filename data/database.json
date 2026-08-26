@@ -463,5 +463,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mung%20Daal_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q031",
+    "name": "Numbuh 1",
+    "category": "CARTOON",
+    "target": {
+      "h": 5,
+      "s": 85,
+      "l": 54
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Numbuh%201_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Numbuh%201_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
