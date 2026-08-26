@@ -118,5 +118,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Dekisugi%20Hidetoshi_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q008",
+    "name": "Gol",
+    "category": "CARTOON",
+    "target": {
+      "h": 10,
+      "s": 77,
+      "l": 51
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/original/q008.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/q008.png",
+      "shading": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/shading/q008.png"
+    }
   }
 ]
