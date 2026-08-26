@@ -508,5 +508,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Papi_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q034",
+    "name": "Pawaemon",
+    "category": "CARTOON",
+    "target": {
+      "h": 44,
+      "s": 47,
+      "l": 57
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Pawaemon_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Pawaemon_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
