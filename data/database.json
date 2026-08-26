@@ -253,5 +253,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Eustace_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q017",
+    "name": "Finn the Human",
+    "category": "CARTOON",
+    "target": {
+      "h": 196,
+      "s": 99,
+      "l": 43
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Finn%20the%20Human_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Finn%20the%20Human_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
