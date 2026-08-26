@@ -238,5 +238,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Eduardo_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q016",
+    "name": "Eustace",
+    "category": "CARTOON",
+    "target": {
+      "h": 67,
+      "s": 45,
+      "l": 32
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Eustace_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Eustace_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
