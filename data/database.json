@@ -223,5 +223,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Courage_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q015",
+    "name": "Eduardo",
+    "category": "CARTOON",
+    "target": {
+      "h": 297,
+      "s": 21,
+      "l": 37
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Eduardo_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Eduardo_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
