@@ -73,5 +73,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Minamoto%20Shizuka_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q004",
+    "name": "Nobi Nobisuke",
+    "category": "CARTOON",
+    "target": {
+      "h": 358,
+      "s": 78,
+      "l": 64
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Nobi%20Nobisuke_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Nobi%20Nobisuke_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
