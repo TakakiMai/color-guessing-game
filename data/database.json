@@ -448,5 +448,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mordecai_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q030",
+    "name": "Mung Daal",
+    "category": "CARTOON",
+    "target": {
+      "h": 188,
+      "s": 57,
+      "l": 71
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Mung%20Daal_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mung%20Daal_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
