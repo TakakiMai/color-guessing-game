@@ -133,5 +133,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/hole/q008.png",
       "shading": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/shading/q008.png"
     }
+  },
+  {
+    "id": "q009",
+    "name": "BMO",
+    "category": "CARTOON",
+    "target": {
+      "h": 168,
+      "s": 35,
+      "l": 51
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/BMO_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/BMO_2_background_hole.png",
+      "shading": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/shading/q009.png"
+    }
   }
 ]
