@@ -553,5 +553,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Sara%20Bellum_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q037",
+    "name": "Sensei",
+    "category": "CARTOON",
+    "target": {
+      "h": 36,
+      "s": 44,
+      "l": 45
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Sensei_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Sensei_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
