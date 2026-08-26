@@ -148,5 +148,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/BMO_2_background_hole.png",
       "shading": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/shading/q009.png"
     }
+  },
+  {
+    "id": "q010",
+    "name": "Bloo",
+    "category": "CARTOON",
+    "target": {
+      "h": 221,
+      "s": 99,
+      "l": 68
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Bloo_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Bloo_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
