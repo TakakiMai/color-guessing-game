@@ -343,5 +343,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/I%20M%20Weasel_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q023",
+    "name": "Jake",
+    "category": "CARTOON",
+    "target": {
+      "h": 41,
+      "s": 99,
+      "l": 57
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Jake_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jake_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
