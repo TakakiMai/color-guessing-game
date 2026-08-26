@@ -208,5 +208,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Cara_2_background_hole.png",
       "shading": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/refs/heads/main/images/shading/q013.png"
     }
+  },
+  {
+    "id": "q014",
+    "name": "Courage",
+    "category": "CARTOON",
+    "target": {
+      "h": 320,
+      "s": 50,
+      "l": 83
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Courage_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Courage_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
