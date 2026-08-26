@@ -313,5 +313,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gusuke_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q021",
+    "name": "Jaiko",
+    "category": "CARTOON",
+    "target": {
+      "h": 86,
+      "s": 78,
+      "l": 76
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Jaiko_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jaiko_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
