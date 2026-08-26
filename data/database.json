@@ -568,5 +568,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Sensei_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q038",
+    "name": "Shnitzel",
+    "category": "CARTOON",
+    "target": {
+      "h": 35,
+      "s": 11,
+      "l": 59
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Shnitzel_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Shnitzel_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
