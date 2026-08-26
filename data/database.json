@@ -418,5 +418,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mandy_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q028",
+    "name": "Mikujin",
+    "category": "CARTOON",
+    "target": {
+      "h": 166,
+      "s": 73,
+      "l": 31
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Mikujin_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mikujin_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
