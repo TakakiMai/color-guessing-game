@@ -283,5 +283,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Fuzzy%20lumpkins_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q019",
+    "name": "Gazim",
+    "category": "CARTOON",
+    "target": {
+      "h": 37,
+      "s": 26,
+      "l": 82
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Gazim_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gazim_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
