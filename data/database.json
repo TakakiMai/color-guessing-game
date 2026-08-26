@@ -268,5 +268,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Finn%20the%20Human_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q018",
+    "name": "Fuzzy lumpkins",
+    "category": "CARTOON",
+    "target": {
+      "h": 336,
+      "s": 82,
+      "l": 67
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Fuzzy%20lumpkins_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Fuzzy%20lumpkins_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
