@@ -172,8 +172,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 
 /* Modal & Admin Grid */
 .admin-panel { padding: 30px; }
-.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
-.admin-card { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+/* Fixed Grid align-items to stretch so both sides are equal height */
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; align-items: stretch; }
+/* Fixed flex column to allow internal scroll on lists */
+.admin-card { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; height: 100%; }
 .admin-question-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(0,0,0,.2); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
 .admin-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: contain; background: #000; }
 .admin-item-info { flex: 1; text-align: left; }
@@ -187,9 +189,11 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 .passcode-input { letter-spacing: 6px; font-size: 24px; font-weight: 700; text-align: center; }
 .eyedropper-active { cursor: crosshair !important; }
 
+/* Fixed scrollable area for lists */
 .file-select-group { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
 .file-select-group select { flex: 1; }
 .file-select-group input[type="file"] { flex: 1; }
+#admin-question-list { flex: 1; overflow-y: auto; padding-right: 4px; }
 
 @media(max-width:760px){
   .game-content,.admin-grid{grid-template-columns:1fr;gap:14px}
@@ -202,7 +206,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 
     <div id="toast" style="display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:300;padding:11px 16px;border-radius:12px;background:#162941;border:1px solid rgba(255,255,255,.12);color:#eef5ff;box-shadow:0 14px 35px rgba(0,0,0,.28);font-size:13px"></div>
 
-    <!-- Modal Passcode Admin -->
     <div id="passcode-modal" class="modal-overlay">
         <div class="modal-box">
             <div style="font-size:36px;margin-bottom:8px;">🔒</div>
@@ -218,7 +221,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Login Screen -->
     <div id="screen-login" class="screen active">
         <div class="standard-panel">
             <div class="brand-mark">🎨</div>
@@ -235,7 +237,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Menu Screen -->
     <div id="screen-menu" class="screen">
         <div class="standard-panel">
             <h2 style="text-align:center;">เมนูหลัก</h2>
@@ -250,7 +251,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Lobby Screen -->
     <div id="screen-lobby" class="screen">
         <div class="lobby-panel">
             <div class="lobby-title"><h2>Lobby</h2><div class="room-code">ROOM <span id="room-code-display">#------</span></div></div>
@@ -278,7 +278,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Color Picker Screen -->
     <div id="screen-picker" class="screen">
         <div class="game-panel">
             <div class="game-header"><span id="round-header-label">COLOR PICKER</span><span class="round-badge">⏱ <span id="timer">15</span>s</span></div>
@@ -302,7 +301,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Round Results Screen -->
     <div id="screen-results" class="screen">
         <div class="game-panel">
             <div class="game-header"><span>ROUND RESULTS</span></div>
@@ -319,7 +317,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Final Screen -->
     <div id="screen-final" class="screen">
         <div class="game-panel">
             <h2 style="text-align:center; color:var(--warning); margin-bottom:20px;">🏆 FINAL LEADERBOARD 🏆</h2>
@@ -328,7 +325,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         </div>
     </div>
 
-    <!-- Admin Panel Screen -->
     <div id="screen-admin" class="screen">
         <div class="admin-panel">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
@@ -420,7 +416,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                 <!-- Admin Question List -->
                 <div class="admin-card">
                     <h3 style="font-size:16px;margin-bottom:14px;color:#4f8cff;">📋 รายการโจทย์ที่มีใน GitHub (<span id="adm-q-count">0</span>)</h3>
-                    <div id="admin-question-list" style="max-height:850px;overflow-y:auto;padding-right:4px;"></div>
+                    <div id="admin-question-list"></div>
                 </div>
             </div>
         </div>
@@ -465,8 +461,22 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             timerId: null, secondsPerRound: 15, currentQuestion: null, round: 1
         };
         
-        // ตัวแปรเก็บสถานะการแก้ไข (ถ้ามีค่า = กำลังแก้ไขข้อนั้นอยู่)
+        // ตัวแปรเก็บสถานะการแก้ไข
         let editingQuizId = null;
+
+        // ฟังก์ชันสร้างรหัสโจทย์อัตโนมัติ (เช่น q001, q002)
+        function generateNextQuizId() {
+            if (!QUESTION_BANK || QUESTION_BANK.length === 0) return 'q001';
+            let maxNum = 0;
+            QUESTION_BANK.forEach(q => {
+                const match = q.id.match(/\d+/);
+                if (match) {
+                    const num = parseInt(match[0], 10);
+                    if (num > maxNum) maxNum = num;
+                }
+            });
+            return 'q' + (maxNum + 1).toString().padStart(3, '0');
+        }
 
         function toast(msg) {
             const t = document.getElementById('toast');
@@ -485,7 +495,7 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         }
 
         /* ----------------------------------------------------
-           GitHub API Utilities (รองรับการเขียนไฟล์ใหม่ทั้งหมด)
+           GitHub API Utilities
         ----------------------------------------------------- */
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
@@ -524,10 +534,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         async function syncDatabaseToGitHub(token, newBankArray, commitMessage) {
             const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_DB_PATH}`;
             
-            // ดึงไฟล์เดิมมาก่อนเพื่อเอา SHA
+            // ดึงไฟล์เดิมมาก่อนเพื่อเอา SHA (เอา Cache-Control ออก ป้องกัน GitHub บล็อก CORS)
             const getRes = await fetch(url + `?ref=${GH_BRANCH}&t=${Date.now()}`, {
                 headers: { 
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -580,6 +590,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                 document.getElementById('setting-category').innerHTML = `<option value="ALL">รวมทุกหมวด</option>` + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
                 document.getElementById('db-status').textContent = `โหลดโจทย์พร้อมแล้ว (${QUESTION_BANK.length} ข้อ)`;
                 document.getElementById('btn-login').disabled = false;
+                
+                // อัปเดตรหัสโจทย์อัตโนมัติในหน้าแอดมินตอนโหลดเสร็จ
+                const quizIdInput = document.getElementById('adm-quiz-id');
+                if(quizIdInput && !quizIdInput.value) quizIdInput.value = generateNextQuizId();
             } catch (err) {
                 document.getElementById('db-status').textContent = "โหลดฐานข้อมูลล้มเหลว ตรวจสอบ URL GitHub";
                 document.getElementById('btn-login').disabled = false;
@@ -855,6 +869,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         window.verifyPasscode = () => {
             if(document.getElementById('passcode-input').value === '010101') {
                 closePasscodeModal(); renderAdminQuestionList(); renderCategoryDropdowns(); switchScreen('screen-admin');
+                
+                // โหลด Token ที่เคยเซฟไว้ขึ้นมาอัตโนมัติ
+                const savedToken = localStorage.getItem('gh_pat');
+                if(savedToken) document.getElementById('adm-gh-token').value = savedToken;
             } else toast('รหัสผิดพลาด');
         };
         
@@ -878,6 +896,8 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         window.fetchGitHubFolderContents = async function() {
             const token = document.getElementById('adm-gh-token').value.trim();
             if(!token) return toast('กรุณาใส่รหัส GitHub Token ก่อนโหลดภาพ');
+            
+            localStorage.setItem('gh_pat', token); // Save token for future
             
             try {
                 toast('กำลังดึงรายชื่อภาพจาก GitHub...');
@@ -1027,13 +1047,12 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             if(!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบโจทย์รหัส "${id}" ?`)) return;
             const token = document.getElementById('adm-gh-token').value.trim();
             if(!token) return toast('⚠️ กรุณาใส่รหัส GitHub Token (PAT) ก่อนทำรายการ');
+            
+            localStorage.setItem('gh_pat', token);
 
             toast('⏳ กำลังลบโจทย์ออกจากระบบ...');
             try {
-                // คัดกรองเอาเฉพาะโจทย์ที่ไม่ใช่ ID ที่เลือกลบ
                 const newBank = QUESTION_BANK.filter(q => q.id !== id);
-                
-                // ส่งชุดข้อมูลใหม่ที่ไม่มีข้อนี้แล้วไปทับไฟล์เดิม
                 await syncDatabaseToGitHub(token, newBank, `Delete question ${id}`);
                 
                 QUESTION_BANK = newBank;
@@ -1051,7 +1070,6 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             const q = QUESTION_BANK.find(item => item.id === id);
             if(!q) return;
 
-            // กำหนดสถานะว่ากำลังแก้ไขโจทย์รหัสอะไรอยู่
             editingQuizId = id;
             
             document.getElementById('form-title').textContent = '✏️ แก้ไขข้อมูลโจทย์';
@@ -1060,13 +1078,11 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             document.getElementById('adm-name').value = q.name;
             document.getElementById('adm-category').value = q.category;
 
-            // กำหนดค่าสี
             document.getElementById('adm-h').value = q.target.h;
             document.getElementById('adm-s').value = q.target.s;
             document.getElementById('adm-l').value = q.target.l;
             updateAdminColorPreview();
 
-            // ดึงลิงก์รูปมาใส่ใน Dropdown เป็นค่าเริ่มต้น (เผื่อขี้เกียจกดโหลดรายชื่อภาพ)
             document.getElementById('adm-sel-answer').innerHTML = `<option value="${q.images.answer}">[รูปที่ใช้อยู่ปัจจุบัน]</option>`;
             document.getElementById('adm-sel-answer').value = q.images.answer;
 
@@ -1078,12 +1094,10 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
 
             previewImagesFromSelects();
 
-            // เปลี่ยนสีปุ่มบันทึกให้เด่นชัดขึ้นว่าเป็นโหมดอัปเดต
             const btn = document.getElementById('btn-upload-save');
             btn.textContent = '💾 บันทึกการแก้ไข (อัปเดต)';
             btn.style.background = 'linear-gradient(135deg, #ffc857, #ff8c00)';
             
-            // แสดงปุ่มยกเลิก
             document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
             
             toast('เลื่อนขึ้นด้านบนเพื่อแก้ไขข้อมูลได้เลยครับ');
@@ -1093,18 +1107,19 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         window.cancelEditMode = function() {
             editingQuizId = null;
             document.getElementById('form-title').textContent = '➕ เพิ่มโจทย์ใหม่และจัดการภาพ';
-            document.getElementById('adm-quiz-id').value = '';
+            document.getElementById('adm-quiz-id').value = generateNextQuizId(); // ใส่รหัสออโต้
             document.getElementById('adm-quiz-id').disabled = false;
             document.getElementById('adm-name').value = '';
             
             const btn = document.getElementById('btn-upload-save');
             btn.textContent = '⬆️ บันทึกโจทย์ (อัปโหลดอัตโนมัติ)';
             btn.style.background = ''; // กลับสีเดิม
+            btn.disabled = false; // แก้บั๊กปุ่มค้าง ปลดล็อกให้บันทึกข้อต่อไปได้เลย
             
             document.getElementById('btn-cancel-edit').style.display = 'none';
-            document.getElementById('adm-sel-answer').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
-            document.getElementById('adm-sel-bg').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
-            document.getElementById('adm-sel-shading').innerHTML = `<option value="">-- เลือกภาพจากคลัง --</option>`;
+            document.getElementById('adm-sel-answer').value = '';
+            document.getElementById('adm-sel-bg').value = '';
+            document.getElementById('adm-sel-shading').value = '';
             
             previewImagesFromSelects(); // เคลียร์ภาพ
         };
@@ -1114,7 +1129,8 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
         // ==========================================
         window.saveAndUploadQuestion = async function() {
             const token = document.getElementById('adm-gh-token').value.trim();
-            const qId = document.getElementById('adm-quiz-id').value.trim() || ('q' + Date.now());
+            let qId = document.getElementById('adm-quiz-id').value.trim();
+            if (!qId) qId = generateNextQuizId(); // ถ้ารหัสว่างให้ใช้ออโต้
             const name = document.getElementById('adm-name').value.trim();
             
             const ansFile = document.getElementById('adm-file-answer').files[0];
@@ -1128,11 +1144,13 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
             if(!token) return toast('กรุณาใส่รหัส GitHub Token (PAT)');
             if(!name || (!ansFile && !finalAnsUrl)) return toast('กรุณากรอกรหัส/ชื่อโจทย์ และเลือกภาพเฉลยอย่างน้อย 1 ภาพ');
 
+            // บันทึก Token ลงเครื่องอัตโนมัติ จะได้ไม่ต้องมากรอกใหม่ทุกรอบ
+            localStorage.setItem('gh_pat', token);
+
             const btn = document.getElementById('btn-upload-save');
             btn.disabled = true; btn.textContent = '⏳ กำลังเตรียมข้อมูล...';
 
             try {
-                // หากมีการเลือกไฟล์จากเครื่อง ให้ทำการอัปโหลดใหม่
                 if (ansFile) {
                     btn.textContent = '⏳ กำลังอัปโหลดภาพเฉลย...';
                     const b64Ans = await fileToBase64(ansFile);
@@ -1152,9 +1170,8 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                     finalShadUrl = await uploadFileToGitHubAPI(token, `images/shading/${qId}.${shadExt}`, b64Shad, `Upload shad img ${qId}`);
                 }
 
-                // สร้าง Object ข้อมูลโจทย์ล่าสุด
                 const newQ = {
-                    id: editingQuizId || qId, // ถ้าแก้โจทย์ให้ใช้ ID เดิม
+                    id: editingQuizId || qId, 
                     name: name, 
                     category: document.getElementById('adm-category').value,
                     target: { h: Number(document.getElementById('adm-h').value), s: Number(document.getElementById('adm-s').value), l: Number(document.getElementById('adm-l').value) },
@@ -1164,24 +1181,20 @@ input[type=range].vertical-tube::-webkit-slider-thumb {
                 btn.textContent = '⏳ กำลังอัปเดตฐานข้อมูล...';
                 let newBank = [...QUESTION_BANK];
 
-                // ถ้าอยู่ในโหมดแก้ไข (Edit) ให้ค้นหาตำแหน่งแล้วแทนที่ข้อมูลเดิม
                 if (editingQuizId) {
                     const index = newBank.findIndex(q => q.id === editingQuizId);
                     if (index !== -1) newBank[index] = newQ;
                 } else {
-                    // ถ้าโหมดปกติ (สร้างใหม่) ให้เอาไปต่อท้าย Array
                     newBank.push(newQ);
                 }
 
-                // ส่ง Array ล่าสุด ไปทับของเดิมบน GitHub
                 await syncDatabaseToGitHub(token, newBank, editingQuizId ? `Update question ${newQ.id}` : `Add new question ${newQ.id}`);
 
                 toast(editingQuizId ? '✅ อัปเดตข้อมูลสำเร็จ!' : '✅ เพิ่มโจทย์ใหม่สำเร็จ!');
                 
-                // คืนค่าฟอร์มกลับสู่สถานะเริ่มต้น
                 QUESTION_BANK = newBank;
                 renderAdminQuestionList();
-                cancelEditMode();
+                cancelEditMode(); // รีเซ็ตฟอร์มกลับค่าเริ่มต้น
 
             } catch(e) {
                 toast('❌ ข้อผิดพลาด: ' + e.message);
