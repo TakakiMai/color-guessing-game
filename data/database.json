@@ -538,5 +538,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Pippo_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q036",
+    "name": "Sara Bellum",
+    "category": "CARTOON",
+    "target": {
+      "h": 0,
+      "s": 88,
+      "l": 52
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Sara%20Bellum_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Sara%20Bellum_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
