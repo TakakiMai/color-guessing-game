@@ -298,5 +298,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gazim_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q020",
+    "name": "Gusuke",
+    "category": "CARTOON",
+    "target": {
+      "h": 359,
+      "s": 100,
+      "l": 32
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Gusuke_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Gusuke_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
