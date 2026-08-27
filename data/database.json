@@ -613,5 +613,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jon%20Arbuckle_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q041",
+    "name": "Mojojojo",
+    "category": "CARTOON",
+    "target": {
+      "h": 224,
+      "s": 56,
+      "l": 51
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Mojojojo_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mojojojo_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
