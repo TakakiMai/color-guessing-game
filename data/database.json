@@ -628,5 +628,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Mojojojo_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q042",
+    "name": "Elmer Fudd",
+    "category": "CARTOON",
+    "target": {
+      "h": 23,
+      "s": 41,
+      "l": 45
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Elmer%20Fudd_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Elmer%20Fudd_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
