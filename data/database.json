@@ -598,5 +598,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/garfield_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q040",
+    "name": "Jon Arbuckle",
+    "category": "CARTOON",
+    "target": {
+      "h": 52,
+      "s": 58,
+      "l": 32
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/Jon%20Arbuckle_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Jon%20Arbuckle_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
