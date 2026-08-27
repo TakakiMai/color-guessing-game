@@ -583,5 +583,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Shnitzel_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q039",
+    "name": "garfield",
+    "category": "CARTOON",
+    "target": {
+      "h": 27,
+      "s": 93,
+      "l": 52
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/garfield_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/garfield_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
