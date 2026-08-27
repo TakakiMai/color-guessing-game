@@ -643,5 +643,20 @@
       "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/Elmer%20Fudd_2_background_hole.png",
       "shading": ""
     }
+  },
+  {
+    "id": "q043",
+    "name": "ฺBugs Bunny",
+    "category": "CARTOON",
+    "target": {
+      "h": 53,
+      "s": 7,
+      "l": 53
+    },
+    "images": {
+      "answer": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/original/bugs%20bunny_1_original.png",
+      "background": "https://raw.githubusercontent.com/TakakiMai/color-guessing-game/main/images/hole/bugs%20bunny_2_background_hole.png",
+      "shading": ""
+    }
   }
 ]
